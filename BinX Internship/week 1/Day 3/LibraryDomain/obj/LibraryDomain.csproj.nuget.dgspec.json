@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "c:\\Binx-internship\\salah-badarneh-BinX-Backend-Internship\\BinX Internship\\week 1\\day 2\\c#fundamentals\\c#fundamentals.csproj": {}
+    "C:\\Binx-internship\\salah-badarneh-BinX-Backend-Internship\\BinX Internship\\week 1\\Day 3\\LibraryDomain\\LibraryDomain.csproj": {}
   },
   "projects": {
-    "c:\\Binx-internship\\salah-badarneh-BinX-Backend-Internship\\BinX Internship\\week 1\\day 2\\c#fundamentals\\c#fundamentals.csproj": {
+    "C:\\Binx-internship\\salah-badarneh-BinX-Backend-Internship\\BinX Internship\\week 1\\Day 3\\LibraryDomain\\LibraryDomain.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "c:\\Binx-internship\\salah-badarneh-BinX-Backend-Internship\\BinX Internship\\week 1\\day 2\\c#fundamentals\\c#fundamentals.csproj",
-        "projectName": "c#fundamentals",
-        "projectPath": "c:\\Binx-internship\\salah-badarneh-BinX-Backend-Internship\\BinX Internship\\week 1\\day 2\\c#fundamentals\\c#fundamentals.csproj",
+        "projectUniqueName": "C:\\Binx-internship\\salah-badarneh-BinX-Backend-Internship\\BinX Internship\\week 1\\Day 3\\LibraryDomain\\LibraryDomain.csproj",
+        "projectName": "LibraryDomain",
+        "projectPath": "C:\\Binx-internship\\salah-badarneh-BinX-Backend-Internship\\BinX Internship\\week 1\\Day 3\\LibraryDomain\\LibraryDomain.csproj",
         "packagesPath": "C:\\Users\\Hp\\.nuget\\packages\\",
-        "outputPath": "c:\\Binx-internship\\salah-badarneh-BinX-Backend-Internship\\BinX Internship\\week 1\\day 2\\c#fundamentals\\obj\\",
+        "outputPath": "C:\\Binx-internship\\salah-badarneh-BinX-Backend-Internship\\BinX Internship\\week 1\\Day 3\\LibraryDomain\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\Hp\\AppData\\Roaming\\NuGet\\NuGet.Config"
