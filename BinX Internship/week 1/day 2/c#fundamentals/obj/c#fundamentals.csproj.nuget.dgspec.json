@@ -1,25 +1,27 @@
 {
   "format": 1,
   "restore": {
-    "c:\\Binx-internship\\salah-badarneh-BinX-Backend-Internship\\BinX Internship\\week 1\\day 2\\c#fundamentals\\c#fundamentals.csproj": {}
+    "C:\\Binx-internship\\salah-badarneh-BinX-Backend-Internship\\BinX Internship\\week 1\\day 2\\c#fundamentals\\c#fundamentals.csproj": {}
   },
   "projects": {
-    "c:\\Binx-internship\\salah-badarneh-BinX-Backend-Internship\\BinX Internship\\week 1\\day 2\\c#fundamentals\\c#fundamentals.csproj": {
+    "C:\\Binx-internship\\salah-badarneh-BinX-Backend-Internship\\BinX Internship\\week 1\\day 2\\c#fundamentals\\c#fundamentals.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "c:\\Binx-internship\\salah-badarneh-BinX-Backend-Internship\\BinX Internship\\week 1\\day 2\\c#fundamentals\\c#fundamentals.csproj",
+        "projectUniqueName": "C:\\Binx-internship\\salah-badarneh-BinX-Backend-Internship\\BinX Internship\\week 1\\day 2\\c#fundamentals\\c#fundamentals.csproj",
         "projectName": "c#fundamentals",
-        "projectPath": "c:\\Binx-internship\\salah-badarneh-BinX-Backend-Internship\\BinX Internship\\week 1\\day 2\\c#fundamentals\\c#fundamentals.csproj",
+        "projectPath": "C:\\Binx-internship\\salah-badarneh-BinX-Backend-Internship\\BinX Internship\\week 1\\day 2\\c#fundamentals\\c#fundamentals.csproj",
         "packagesPath": "C:\\Users\\Hp\\.nuget\\packages\\",
-        "outputPath": "c:\\Binx-internship\\salah-badarneh-BinX-Backend-Internship\\BinX Internship\\week 1\\day 2\\c#fundamentals\\obj\\",
+        "outputPath": "C:\\Binx-internship\\salah-badarneh-BinX-Backend-Internship\\BinX Internship\\week 1\\day 2\\c#fundamentals\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "C:\\Users\\Hp\\AppData\\Roaming\\NuGet\\NuGet.Config"
+          "C:\\Users\\Hp\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
           "net10.0"
         ],
         "sources": {
+          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
