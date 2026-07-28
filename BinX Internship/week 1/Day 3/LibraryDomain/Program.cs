@@ -1,6 +1,7 @@
 ﻿
 using System.Net;
 using System.Runtime.CompilerServices;
+using LibraryDomain.Models;
 
 RunLibraryDemo();
 
@@ -24,8 +25,9 @@ static void RunLibraryDemo()
     }
     
 }
-
-class Author : INotifiable
+namespace LibraryDomain.Models
+{
+public class Author : INotifiable
 {
     public String Name {get; private set;}
     public string Country {get; private set;}
@@ -46,7 +48,7 @@ class Author : INotifiable
     }
 }
 
-class Book : INotifiable
+public class Book : INotifiable
 {
     public string Title {get; private set;}
     public Author Author {get; private set;}
@@ -73,7 +75,8 @@ class Book : INotifiable
 
 record BookSummaryDto(string Title, string AuthorName, int PublishedYear);
 
-interface INotifiable
+public interface INotifiable
 {
     void Notify(string message);
+}
 }
