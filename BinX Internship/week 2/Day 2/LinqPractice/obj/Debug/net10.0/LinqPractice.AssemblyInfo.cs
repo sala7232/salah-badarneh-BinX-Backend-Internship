@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("LinqPractice")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+483f82d34db950780ff9513341ddb9d68e49816b")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+eb0a46efe0e4dad9755866a69f25342b4b4aa3dd")]
 [assembly: System.Reflection.AssemblyProductAttribute("LinqPractice")]
 [assembly: System.Reflection.AssemblyTitleAttribute("LinqPractice")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
