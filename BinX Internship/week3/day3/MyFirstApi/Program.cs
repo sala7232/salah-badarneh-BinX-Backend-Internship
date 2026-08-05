@@ -1,5 +1,5 @@
 using MyFirstApi.Middleware;
-using MyFirstApi.Services;
+
 using Microsoft.EntityFrameworkCore;
 using MyFirstApi.Data;
 
@@ -13,7 +13,7 @@ builder.Services.AddDbContext<LibraryDbContext>(options =>
     options.UseSqlServer(
         builder.Configuration.GetConnectionString("LibraryDatabase")));
 
-builder.Services.AddScoped<IBookSummaryService, BookSummaryService>();
+
 
 var app = builder.Build();
 
