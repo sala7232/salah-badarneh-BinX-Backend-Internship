@@ -1,9 +1,12 @@
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using MyFirstApi.Models;
 
 namespace MyFirstApi.Data;
 
-public class LibraryDbContext : DbContext
+public class LibraryDbContext
+    : IdentityDbContext<IdentityUser>
 {
     public LibraryDbContext(
         DbContextOptions<LibraryDbContext> options)
