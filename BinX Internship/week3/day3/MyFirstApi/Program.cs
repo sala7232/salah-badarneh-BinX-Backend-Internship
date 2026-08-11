@@ -5,6 +5,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using MyFirstApi.Data;
 using MyFirstApi.Middleware;
+using MyFirstApi.Authorization;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -78,13 +79,35 @@ builder.Services
 
                 ValidateLifetime = true,
 
-                ClockSkew = TimeSpan.Zero
+                ClockSkew = TimeSpan.Zero,
+                
+                NameClaimType = "email",
+                RoleClaimType = AppClaimTypes.Role
             };
     });
 
-builder.Services.AddAuthorization();
+builder.Services.AddAuthorization(options =>
+{
+    options.AddPolicy(
+        AppPolicies.CanCreateBooks,
+        policy =>
+        {
+            policy.RequireAuthenticatedUser();
+
+            policy.RequireClaim(
+                AppClaimTypes.Permission,
+                AppPermissions.BooksCreate);
+        });
+});
 
 var app = builder.Build();
+
+if (app.Environment.IsDevelopment())
+{
+    await IdentitySeeder.SeedAsync(
+        app.Services,
+        app.Configuration);
+}
 
 app.UseMiddleware<RequestLoggingMiddleware>();
 

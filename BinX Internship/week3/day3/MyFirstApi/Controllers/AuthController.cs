@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
 using MyFirstApi.DTOs;
+using MyFirstApi.Authorization;
 
 namespace MyFirstApi.Controllers;
 
@@ -100,7 +101,7 @@ public class AuthController : ControllerBase
             });
         }
 
-        var response = CreateToken(user);
+        var response = await CreateTokenAsync(user);
 
         return Ok(response);
     }
@@ -119,7 +120,7 @@ public class AuthController : ControllerBase
         });
     }
 
-    private LoginResponse CreateToken(IdentityUser user)
+    private async Task<LoginResponse> CreateTokenAsync(IdentityUser user)
     {
         var issuer = _configuration["Jwt:Issuer"]
             ?? throw new InvalidOperationException(
@@ -139,6 +140,8 @@ public class AuthController : ControllerBase
         var issuedAtUtc = DateTime.UtcNow;
         var expiresAtUtc =
             issuedAtUtc.AddMinutes(expiryMinutes);
+            var roles = await _userManager.GetRolesAsync(user);
+            var userClaims = await _userManager.GetClaimsAsync(user);
 
         var claims = new List<Claim>
         {
@@ -154,6 +157,15 @@ public class AuthController : ControllerBase
                 JwtRegisteredClaimNames.Jti,
                 Guid.NewGuid().ToString())
         };
+
+        claims.AddRange(
+          roles.Select(role =>
+           new Claim(
+            AppClaimTypes.Role,
+            role)));
+        claims.AddRange(userClaims);
+
+
 
         var securityKey = new SymmetricSecurityKey(
             Encoding.UTF8.GetBytes(signingKey));

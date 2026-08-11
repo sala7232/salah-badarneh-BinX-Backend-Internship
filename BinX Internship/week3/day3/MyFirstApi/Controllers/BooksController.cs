@@ -3,9 +3,11 @@ using Microsoft.EntityFrameworkCore;
 using MyFirstApi.Data;
 using MyFirstApi.DTOs;
 using MyFirstApi.Models;
+using Microsoft.AspNetCore.Authorization;
+using MyFirstApi.Authorization;
 
 namespace MyFirstApi.Controllers;
-
+[Authorize]
 [ApiController]
 [Route("api/v1/books")]
 public class BooksController : ControllerBase
@@ -76,6 +78,7 @@ public class BooksController : ControllerBase
         return Ok(book);
     }
 
+    [Authorize(Policy = AppPolicies.CanCreateBooks)]
     [HttpPost]
     public async Task<ActionResult<BookResponse>> Create(
         CreateBookRequest request)
@@ -176,6 +179,7 @@ public class BooksController : ControllerBase
         return Ok(response);
     }
 
+    [Authorize(Roles = AppRoles.Admin)]
     [HttpDelete("{id:int}")]
     public async Task<IActionResult> Delete(int id)
     {
