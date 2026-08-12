@@ -6,10 +6,15 @@ using Microsoft.IdentityModel.Tokens;
 using MyFirstApi.Data;
 using MyFirstApi.Middleware;
 using MyFirstApi.Authorization;
+using FluentValidation;
+using FluentValidation.AspNetCore;
+using MyFirstApi.Validators;
 
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllers();
+builder.Services.AddFluentValidationAutoValidation();
+builder.Services.AddValidatorsFromAssemblyContaining<CreateBookRequestValidator>();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 

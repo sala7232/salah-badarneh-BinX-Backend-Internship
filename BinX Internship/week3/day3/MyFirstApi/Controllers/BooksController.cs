@@ -83,13 +83,7 @@ public class BooksController : ControllerBase
     public async Task<ActionResult<BookResponse>> Create(
         CreateBookRequest request)
     {
-        if (string.IsNullOrWhiteSpace(request.Title))
-        {
-            return BadRequest(new
-            {
-                message = "Title cannot be empty."
-            });
-        }
+        
 
         var author = await _context.Authors
             .AsNoTracking()
@@ -142,13 +136,7 @@ public class BooksController : ControllerBase
             });
         }
 
-        if (string.IsNullOrWhiteSpace(request.Title))
-        {
-            return BadRequest(new
-            {
-                message = "Title cannot be empty."
-            });
-        }
+        
 
         var author = await _context.Authors
             .AsNoTracking()
