@@ -21,3 +21,13 @@ public static class AppPermissions
 {
     public const string BooksCreate = "books.create";
 }
+
+public static class AppRateLimitPolicies
+{
+    public const string Login = "LoginRateLimit";
+}
+
+public static class AppCorsPolicies
+{
+    public const string AllowFrontend = "AllowFrontend";
+}

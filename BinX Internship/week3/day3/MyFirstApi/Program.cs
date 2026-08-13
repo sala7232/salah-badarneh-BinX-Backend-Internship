@@ -9,6 +9,7 @@ using MyFirstApi.Authorization;
 using FluentValidation;
 using FluentValidation.AspNetCore;
 using MyFirstApi.Validators;
+using System.Threading.RateLimiting;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -17,6 +18,81 @@ builder.Services.AddFluentValidationAutoValidation();
 builder.Services.AddValidatorsFromAssemblyContaining<CreateBookRequestValidator>();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+
+var allowedOrigins = builder.Configuration
+    .GetSection("Cors:AllowedOrigins")
+    .Get<string[]>()
+    ?? throw new InvalidOperationException(
+        "CORS allowed origins are missing.");
+
+if (allowedOrigins.Length == 0)
+{
+    throw new InvalidOperationException(
+        "At least one CORS origin is required.");
+}
+
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy(
+        AppCorsPolicies.AllowFrontend,
+        policy =>
+        {
+            policy
+                .WithOrigins(allowedOrigins)
+                .AllowAnyHeader()
+                .AllowAnyMethod();
+        });
+});
+
+builder.Services.AddRateLimiter(options =>
+{
+    options.RejectionStatusCode =
+        StatusCodes.Status429TooManyRequests;
+
+    options.GlobalLimiter =
+        PartitionedRateLimiter.Create<HttpContext, string>(
+            context =>
+                RateLimitPartition.GetFixedWindowLimiter(
+                    partitionKey:
+                        context.Connection.RemoteIpAddress
+                            ?.ToString()
+                        ?? "unknown",
+
+                    factory: _ =>
+                        new FixedWindowRateLimiterOptions
+                        {
+                            AutoReplenishment = true,
+                            PermitLimit = 10,
+                            Window =
+                                TimeSpan.FromMinutes(1),
+                            QueueLimit = 0,
+                            QueueProcessingOrder =
+                                QueueProcessingOrder
+                                    .OldestFirst
+                        }));
+
+    options.AddPolicy(
+        AppRateLimitPolicies.Login,
+        context =>
+            RateLimitPartition.GetFixedWindowLimiter(
+                partitionKey:
+                    context.Connection.RemoteIpAddress
+                        ?.ToString()
+                    ?? "unknown",
+
+                factory: _ =>
+                    new FixedWindowRateLimiterOptions
+                    {
+                        AutoReplenishment = true,
+                        PermitLimit = 3,
+                        Window =
+                            TimeSpan.FromMinutes(1),
+                        QueueLimit = 0,
+                        QueueProcessingOrder =
+                            QueueProcessingOrder
+                                .OldestFirst
+                    }));
+});
 
 builder.Services.AddDbContext<LibraryDbContext>(options =>
     options.UseSqlServer(
@@ -116,10 +192,21 @@ if (app.Environment.IsDevelopment())
 
 app.UseMiddleware<RequestLoggingMiddleware>();
 
+if (!app.Environment.IsDevelopment())
+{
+    app.UseHsts();
+}
+
 app.UseHttpsRedirection();
 
 app.UseSwagger();
 app.UseSwaggerUI();
+
+app.UseRouting();
+
+app.UseCors(AppCorsPolicies.AllowFrontend);
+
+app.UseRateLimiter();
 
 app.UseAuthentication();
 app.UseAuthorization();

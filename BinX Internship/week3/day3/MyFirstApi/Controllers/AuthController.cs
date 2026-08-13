@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
 using MyFirstApi.DTOs;
 using MyFirstApi.Authorization;
+using Microsoft.AspNetCore.RateLimiting;
 
 namespace MyFirstApi.Controllers;
 
@@ -71,6 +72,7 @@ public class AuthController : ControllerBase
     }
 
     [HttpPost("login")]
+    [EnableRateLimiting(AppRateLimitPolicies.Login)]
     public async Task<ActionResult<LoginResponse>> Login(
         LoginRequest request)
     {
