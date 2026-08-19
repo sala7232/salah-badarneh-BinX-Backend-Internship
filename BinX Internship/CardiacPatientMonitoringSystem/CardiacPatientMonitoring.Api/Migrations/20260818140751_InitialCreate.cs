@@ -245,42 +245,6 @@ namespace CardiacPatientMonitoring.Api.Migrations
                         onDelete: ReferentialAction.Cascade);
                 });
 
-            migrationBuilder.InsertData(
-                table: "Patients",
-                columns: new[] { "Id", "DateOfBirth", "Diagnosis", "FullName", "MedicalRecordNumber", "PhoneNumber" },
-                values: new object[,]
-                {
-                    { 1, new DateOnly(1975, 5, 14), "Hypertension", "Sample Patient One", "MRN-1001", "000-000-1001" },
-                    { 2, new DateOnly(1982, 11, 3), "Arrhythmia", "Sample Patient Two", "MRN-1002", "000-000-1002" }
-                });
-
-            migrationBuilder.InsertData(
-                table: "Appointments",
-                columns: new[] { "Id", "PatientId", "Purpose", "ScheduledAt", "Status" },
-                values: new object[,]
-                {
-                    { 1, 1, "Blood pressure follow-up", new DateTime(2026, 9, 1, 10, 0, 0, 0, DateTimeKind.Utc), "Scheduled" },
-                    { 2, 2, "Heart rhythm review", new DateTime(2026, 8, 5, 11, 30, 0, 0, DateTimeKind.Utc), "Completed" }
-                });
-
-            migrationBuilder.InsertData(
-                table: "Medications",
-                columns: new[] { "Id", "Dosage", "EndDate", "Frequency", "Name", "PatientId", "StartDate" },
-                values: new object[,]
-                {
-                    { 1, "10 mg", null, "Once daily", "Lisinopril", 1, new DateOnly(2026, 7, 1) },
-                    { 2, "25 mg", null, "Twice daily", "Metoprolol", 2, new DateOnly(2026, 7, 10) }
-                });
-
-            migrationBuilder.InsertData(
-                table: "VitalSigns",
-                columns: new[] { "Id", "DiastolicBloodPressure", "HeartRate", "OxygenSaturation", "PatientId", "RecordedAt", "SystolicBloodPressure" },
-                values: new object[,]
-                {
-                    { 1, 82, 78, 98.00m, 1, new DateTime(2026, 8, 1, 8, 30, 0, 0, DateTimeKind.Utc), 128 },
-                    { 2, 88, 92, 97.50m, 2, new DateTime(2026, 8, 1, 9, 0, 0, 0, DateTimeKind.Utc), 135 }
-                });
-
             migrationBuilder.CreateIndex(
                 name: "IX_Appointments_PatientId",
                 table: "Appointments",

@@ -2,7 +2,7 @@
 
 This project is a standalone ASP.NET Core REST API for a cardiac patient monitoring prototype. It manages patient profiles, vital-sign measurements, medications, and appointments.
 
-The API uses SQL Server through Entity Framework Core, ASP.NET Core Identity for user storage and password hashing, JWT bearer authentication for protected routes, FluentValidation for request validation, and centralized exception handling. Swagger and Postman can be used to review the complete API without a separate user interface.
+The API uses SQL Server through Entity Framework Core, ASP.NET Core Identity for user storage and password hashing, JWT bearer authentication for protected routes, and FluentValidation for request validation. Swagger and Postman can be used to review the current API without a separate user interface.
 
 ## Main Features
 
@@ -14,8 +14,7 @@ The API uses SQL Server through Entity Framework Core, ASP.NET Core Identity for
 - Filter vital signs, medications, and appointments by patient.
 - Search medications by name and filter appointments by status.
 - Validate request DTOs and return structured `400 Bad Request` responses.
-- Return safe error responses without exposing internal stack traces.
-- Test selected controller and middleware success and failure paths with xUnit and Moq.
+- Log request methods, paths, and response status codes with custom middleware.
 
 ## Project Structure
 
@@ -32,12 +31,8 @@ CardiacPatientMonitoringSystem/
 |   |-- Validators/
 |   |-- Program.cs
 |   `-- appsettings.json
-|-- CardiacPatientMonitoring.Api.Tests/
-|   |-- Controllers/
-|   `-- Middleware/
 |-- Postman/
 |-- CardiacPatientMonitoringSystem.sln
-|-- MILESTONES.md
 `-- README.md
 ```
 
@@ -90,7 +85,7 @@ cd .\CardiacPatientMonitoring.Api
 dotnet ef database update
 ```
 
-The migration creates the application tables, ASP.NET Core Identity tables, relationships, constraints, and synthetic seed data.
+The migration creates the application tables, ASP.NET Core Identity tables, relationships, and constraints.
 
 ### Application Tables
 
@@ -102,8 +97,6 @@ The migration creates the application tables, ASP.NET Core Identity tables, rela
 | `Appointments` | Stores appointment date, purpose, and status. |
 
 Each patient has a one-to-many relationship with vital signs, medications, and appointments. The related tables use `PatientId` as a foreign key. Deleting a patient deletes that patient's related records through cascade delete.
-
-The seed data contains two synthetic patients and related sample vital signs, medications, and appointments. No real patient data is included.
 
 ## Build and Run
 
@@ -166,7 +159,7 @@ POST /api/v1/auth/login
 
 A successful login returns `200 OK` with an `accessToken`, token type, and expiry time. Invalid credentials return `401 Unauthorized`.
 
-In Swagger, copy the `accessToken`, select **Authorize**, and paste the token into the bearer field. In Postman, the login request stores the token in the `accessToken` environment variable for the protected requests.
+In Postman, the login request stores the token in the `accessToken` environment variable for the protected requests.
 
 ## API Endpoints
 
@@ -221,7 +214,7 @@ The authentication endpoints are public. Every other endpoint requires a valid J
 
 Appointment status values are `Scheduled`, `Completed`, and `Cancelled`.
 
-## Validation and Error Responses
+## Validation and API Responses
 
 FluentValidation checks every create, update, register, and login request. The business rules include:
 
@@ -239,9 +232,8 @@ Common responses are:
 | `401 Unauthorized` | A valid JWT was not supplied. |
 | `404 Not Found` | The requested record does not exist. |
 | `409 Conflict` | A patient medical record number already exists. |
-| `500 Internal Server Error` | An unexpected error was handled safely. |
 
-Validation errors use the structured ASP.NET Core validation response. Unexpected exceptions are handled by `ExceptionHandlingMiddleware`, logged on the server, and returned without a stack trace or internal exception message.
+Validation errors use the structured ASP.NET Core validation response.
 
 ## Postman
 
@@ -268,27 +260,6 @@ The collection demonstrates:
 - Validation failures.
 - Patient search and module filters.
 
-## Automated Tests
-
-Run all tests from the solution directory:
-
-```powershell
-dotnet test
-```
-
-The test project uses xUnit and Moq. It covers:
-
-- Returning a patient when the ID exists.
-- Returning `404 Not Found` when a patient does not exist.
-- Returning `201 Created` for a valid patient request.
-- Returning `409 Conflict` for a duplicate medical record number.
-- Returning `404 Not Found` when deleting a missing patient.
-- Returning safe problem details when middleware catches an exception.
-
-## Milestones
-
-The evidence for the seven two-day milestones is documented in [MILESTONES.md](MILESTONES.md).
-
 ## Tools Used
 
 - C# and .NET 10
@@ -297,16 +268,4 @@ The evidence for the seven two-day milestones is documented in [MILESTONES.md](M
 - ASP.NET Core Identity and JWT bearer authentication
 - FluentValidation
 - Swagger and Postman
-- xUnit and Moq
 - Git and GitHub
-
-## Suggested Demo Flow
-
-1. Show the solution structure and build the solution.
-2. Show the SQL Server tables, relationships, migration, and synthetic seed data.
-3. Register and log in through Swagger or Postman.
-4. Show that a protected request without a token returns `401 Unauthorized`.
-5. Run one patient CRUD flow and one related vital-sign request.
-6. Show medication search and appointment filtering.
-7. Send one invalid request and show the structured validation response.
-8. Run `dotnet test` and explain the controller and middleware test cases.

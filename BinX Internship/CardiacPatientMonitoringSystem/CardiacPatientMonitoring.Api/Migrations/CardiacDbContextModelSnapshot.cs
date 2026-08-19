@@ -52,23 +52,6 @@ namespace CardiacPatientMonitoring.Api.Migrations
 
                     b.ToTable("Appointments");
 
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            PatientId = 1,
-                            Purpose = "Blood pressure follow-up",
-                            ScheduledAt = new DateTime(2026, 9, 1, 10, 0, 0, 0, DateTimeKind.Utc),
-                            Status = "Scheduled"
-                        },
-                        new
-                        {
-                            Id = 2,
-                            PatientId = 2,
-                            Purpose = "Heart rhythm review",
-                            ScheduledAt = new DateTime(2026, 8, 5, 11, 30, 0, 0, DateTimeKind.Utc),
-                            Status = "Completed"
-                        });
                 });
 
             modelBuilder.Entity("CardiacPatientMonitoring.Api.Models.Medication", b =>
@@ -109,25 +92,6 @@ namespace CardiacPatientMonitoring.Api.Migrations
 
                     b.ToTable("Medications");
 
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            Dosage = "10 mg",
-                            Frequency = "Once daily",
-                            Name = "Lisinopril",
-                            PatientId = 1,
-                            StartDate = new DateOnly(2026, 7, 1)
-                        },
-                        new
-                        {
-                            Id = 2,
-                            Dosage = "25 mg",
-                            Frequency = "Twice daily",
-                            Name = "Metoprolol",
-                            PatientId = 2,
-                            StartDate = new DateOnly(2026, 7, 10)
-                        });
                 });
 
             modelBuilder.Entity("CardiacPatientMonitoring.Api.Models.Patient", b =>
@@ -168,25 +132,6 @@ namespace CardiacPatientMonitoring.Api.Migrations
 
                     b.ToTable("Patients");
 
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            DateOfBirth = new DateOnly(1975, 5, 14),
-                            Diagnosis = "Hypertension",
-                            FullName = "Sample Patient One",
-                            MedicalRecordNumber = "MRN-1001",
-                            PhoneNumber = "000-000-1001"
-                        },
-                        new
-                        {
-                            Id = 2,
-                            DateOfBirth = new DateOnly(1982, 11, 3),
-                            Diagnosis = "Arrhythmia",
-                            FullName = "Sample Patient Two",
-                            MedicalRecordNumber = "MRN-1002",
-                            PhoneNumber = "000-000-1002"
-                        });
                 });
 
             modelBuilder.Entity("CardiacPatientMonitoring.Api.Models.VitalSign", b =>
@@ -222,27 +167,6 @@ namespace CardiacPatientMonitoring.Api.Migrations
 
                     b.ToTable("VitalSigns");
 
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            DiastolicBloodPressure = 82,
-                            HeartRate = 78,
-                            OxygenSaturation = 98.00m,
-                            PatientId = 1,
-                            RecordedAt = new DateTime(2026, 8, 1, 8, 30, 0, 0, DateTimeKind.Utc),
-                            SystolicBloodPressure = 128
-                        },
-                        new
-                        {
-                            Id = 2,
-                            DiastolicBloodPressure = 88,
-                            HeartRate = 92,
-                            OxygenSaturation = 97.50m,
-                            PatientId = 2,
-                            RecordedAt = new DateTime(2026, 8, 1, 9, 0, 0, 0, DateTimeKind.Utc),
-                            SystolicBloodPressure = 135
-                        });
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
