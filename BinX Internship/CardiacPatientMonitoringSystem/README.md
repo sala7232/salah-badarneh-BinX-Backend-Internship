@@ -31,6 +31,7 @@ CardiacPatientMonitoringSystem/
 |   |-- Middleware/
 |   |-- Migrations/
 |   |-- Models/
+|   |-- Repositories/
 |   |-- Services/
 |   |-- Validators/
 |   |-- Program.cs
@@ -276,6 +277,8 @@ dotnet test
 
 The Week 5 Day 1 tests use xUnit and the Arrange-Act-Assert pattern. Three `[Fact]` tests verify low, normal, and high heart-rate statuses, while one `[Theory]` runs three pulse-pressure calculation cases.
 
+The Week 5 Day 2 tests use Moq to isolate `PatientService` from `IPatientRepository`. They verify a configured return value, a repository exception, and that `GetByIdAsync` is called exactly once.
+
 ## Tools Used
 
 - C# and .NET 10
@@ -285,4 +288,5 @@ The Week 5 Day 1 tests use xUnit and the Arrange-Act-Assert pattern. Three `[Fac
 - FluentValidation
 - Swagger and Postman
 - xUnit
+- Moq
 - Git and GitHub

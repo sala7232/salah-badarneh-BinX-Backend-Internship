@@ -2,6 +2,7 @@ using System.Text;
 using System.Text.Json.Serialization;
 using CardiacPatientMonitoring.Api.Data;
 using CardiacPatientMonitoring.Api.Middleware;
+using CardiacPatientMonitoring.Api.Repositories;
 using CardiacPatientMonitoring.Api.Services;
 using CardiacPatientMonitoring.Api.Validators;
 using FluentValidation;
@@ -96,6 +97,7 @@ builder.Services
     });
 
 builder.Services.AddAuthorization();
+builder.Services.AddScoped<IPatientRepository, PatientRepository>();
 builder.Services.AddScoped<IPatientService, PatientService>();
 
 var app = builder.Build();
