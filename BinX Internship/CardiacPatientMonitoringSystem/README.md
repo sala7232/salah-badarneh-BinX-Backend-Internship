@@ -18,6 +18,7 @@ The selected Phase 3 project is a Healthcare Management API focused on cardiac p
 - Filter vital signs, medications, and appointments by patient.
 - Search medications by name and filter appointments by status.
 - Validate request DTOs and return structured `400 Bad Request` responses.
+- Return safe `ProblemDetails` responses for unexpected server errors.
 - Log request methods, paths, and response status codes with custom middleware.
 
 ## Project Structure
@@ -282,6 +283,8 @@ The Week 5 Day 2 tests use Moq to isolate `PatientService` from `IPatientReposit
 
 The Week 5 Day 3 integration tests use `WebApplicationFactory` to send real HTTP requests through the API pipeline. They use an isolated EF Core In-Memory database and a signed test JWT to verify the patient Get-by-id success response and its not-found response.
 
+The Week 5 Day 4 middleware catches unhandled exceptions globally, logs the exception with the request method, path, and trace identifier through `ILogger`, and returns a safe `ProblemDetails` response. Its integration test deliberately makes the patient service throw and confirms that the response contains no exception message, exception type, or stack trace. The controllers and services had no redundant general-purpose `try/catch` blocks to remove.
+
 ## Tools Used
 
 - C# and .NET 10
@@ -294,4 +297,5 @@ The Week 5 Day 3 integration tests use `WebApplicationFactory` to send real HTTP
 - Moq
 - Microsoft.AspNetCore.Mvc.Testing
 - EF Core In-Memory provider
+- ProblemDetails and structured ILogger logging
 - Git and GitHub

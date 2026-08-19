@@ -102,6 +102,7 @@ builder.Services.AddScoped<IPatientService, PatientService>();
 
 var app = builder.Build();
 
+app.UseMiddleware<GlobalExceptionHandlingMiddleware>();
 app.UseMiddleware<RequestLoggingMiddleware>();
 
 app.UseHttpsRedirection();
