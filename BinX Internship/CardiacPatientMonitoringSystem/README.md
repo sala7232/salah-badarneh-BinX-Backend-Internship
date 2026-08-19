@@ -37,6 +37,7 @@ CardiacPatientMonitoringSystem/
 |   |-- Program.cs
 |   `-- appsettings.json
 |-- CardiacPatientMonitoring.Api.Tests/
+|   |-- Integration/
 |   `-- Services/
 |-- Postman/
 |-- CardiacPatientMonitoringSystem.sln
@@ -267,7 +268,7 @@ The collection demonstrates:
 - Validation failures.
 - Patient search and module filters.
 
-## Unit Tests
+## Tests
 
 Run the test suite from the solution directory:
 
@@ -279,6 +280,8 @@ The Week 5 Day 1 tests use xUnit and the Arrange-Act-Assert pattern. Three `[Fac
 
 The Week 5 Day 2 tests use Moq to isolate `PatientService` from `IPatientRepository`. They verify a configured return value, a repository exception, and that `GetByIdAsync` is called exactly once.
 
+The Week 5 Day 3 integration tests use `WebApplicationFactory` to send real HTTP requests through the API pipeline. They use an isolated EF Core In-Memory database and a signed test JWT to verify the patient Get-by-id success response and its not-found response.
+
 ## Tools Used
 
 - C# and .NET 10
@@ -289,4 +292,6 @@ The Week 5 Day 2 tests use Moq to isolate `PatientService` from `IPatientReposit
 - Swagger and Postman
 - xUnit
 - Moq
+- Microsoft.AspNetCore.Mvc.Testing
+- EF Core In-Memory provider
 - Git and GitHub

@@ -50,24 +50,6 @@ builder.Services
     .AddEntityFrameworkStores<CardiacDbContext>()
     .AddDefaultTokenProviders();
 
-var jwtIssuer = builder.Configuration["Jwt:Issuer"]
-    ?? throw new InvalidOperationException(
-        "JWT issuer is missing.");
-
-var jwtAudience = builder.Configuration["Jwt:Audience"]
-    ?? throw new InvalidOperationException(
-        "JWT audience is missing.");
-
-var jwtKey = builder.Configuration["Jwt:Key"]
-    ?? throw new InvalidOperationException(
-        "JWT signing key is missing.");
-
-if (Encoding.UTF8.GetByteCount(jwtKey) < 32)
-{
-    throw new InvalidOperationException(
-        "JWT signing key must be at least 32 bytes.");
-}
-
 builder.Services
     .AddAuthentication(options =>
     {
@@ -78,6 +60,24 @@ builder.Services
     })
     .AddJwtBearer(options =>
     {
+        var jwtIssuer = builder.Configuration["Jwt:Issuer"]
+            ?? throw new InvalidOperationException(
+                "JWT issuer is missing.");
+
+        var jwtAudience = builder.Configuration["Jwt:Audience"]
+            ?? throw new InvalidOperationException(
+                "JWT audience is missing.");
+
+        var jwtKey = builder.Configuration["Jwt:Key"]
+            ?? throw new InvalidOperationException(
+                "JWT signing key is missing.");
+
+        if (Encoding.UTF8.GetByteCount(jwtKey) < 32)
+        {
+            throw new InvalidOperationException(
+                "JWT signing key must be at least 32 bytes.");
+        }
+
         options.MapInboundClaims = false;
         options.TokenValidationParameters =
             new TokenValidationParameters
@@ -117,3 +117,7 @@ app.UseAuthorization();
 app.MapControllers();
 
 app.Run();
+
+public partial class Program
+{
+}
