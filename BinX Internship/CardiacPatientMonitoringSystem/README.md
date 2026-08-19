@@ -4,6 +4,10 @@ This project is a standalone ASP.NET Core REST API for a cardiac patient monitor
 
 The API uses SQL Server through Entity Framework Core, ASP.NET Core Identity for user storage and password hashing, JWT bearer authentication for protected routes, and FluentValidation for request validation. Swagger and Postman can be used to review the current API without a separate user interface.
 
+## Phase 3 Project Scope
+
+The selected Phase 3 project is a Healthcare Management API focused on cardiac patient monitoring. Its scope covers authentication, patient profiles, vital-sign measurements, medications, appointments, validation, SQL Server persistence, and documented REST workflows. By Week 9, it can realistically reach the professional baseline through role-based access control, unit and integration tests, deployment, CI/CD, and complete documentation.
+
 ## Main Features
 
 - Register a user and log in with email and password.
@@ -31,6 +35,8 @@ CardiacPatientMonitoringSystem/
 |   |-- Validators/
 |   |-- Program.cs
 |   `-- appsettings.json
+|-- CardiacPatientMonitoring.Api.Tests/
+|   `-- Services/
 |-- Postman/
 |-- CardiacPatientMonitoringSystem.sln
 `-- README.md
@@ -260,6 +266,16 @@ The collection demonstrates:
 - Validation failures.
 - Patient search and module filters.
 
+## Unit Tests
+
+Run the test suite from the solution directory:
+
+```powershell
+dotnet test
+```
+
+The Week 5 Day 1 tests use xUnit and the Arrange-Act-Assert pattern. Three `[Fact]` tests verify low, normal, and high heart-rate statuses, while one `[Theory]` runs three pulse-pressure calculation cases.
+
 ## Tools Used
 
 - C# and .NET 10
@@ -268,4 +284,5 @@ The collection demonstrates:
 - ASP.NET Core Identity and JWT bearer authentication
 - FluentValidation
 - Swagger and Postman
+- xUnit
 - Git and GitHub
