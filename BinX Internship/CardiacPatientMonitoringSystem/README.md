@@ -42,6 +42,7 @@ CardiacPatientMonitoringSystem/
 |   `-- Services/
 |-- Postman/
 |-- CardiacPatientMonitoringSystem.sln
+|-- WEEK5-SUMMARY.md
 `-- README.md
 ```
 
@@ -284,6 +285,8 @@ The Week 5 Day 2 tests use Moq to isolate `PatientService` from `IPatientReposit
 The Week 5 Day 3 integration tests use `WebApplicationFactory` to send real HTTP requests through the API pipeline. They use an isolated EF Core In-Memory database and a signed test JWT to verify the patient Get-by-id success response and its not-found response.
 
 The Week 5 Day 4 middleware catches unhandled exceptions globally, logs the exception with the request method, path, and trace identifier through `ILogger`, and returns a safe `ProblemDetails` response. Its integration test deliberately makes the patient service throw and confirms that the response contains no exception message, exception type, or stack trace. The controllers and services had no redundant general-purpose `try/catch` blocks to remove.
+
+The Week 5 Day 5 risk review prioritizes heart-rate classification, pulse-pressure calculation, and medical-record-number normalization. The complete suite contains twelve passing test cases, and the [Week 5 Summary](./WEEK5-SUMMARY.md) is ready to copy into Notion for the mentor check-in.
 
 ## Tools Used
 

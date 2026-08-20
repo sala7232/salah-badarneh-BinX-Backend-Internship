@@ -72,4 +72,34 @@ public class PatientServiceTests
         // Assert
         Assert.Same(expectedException, exception);
     }
+
+    [Fact]
+    public async Task MedicalRecordNumberExistsAsync_NormalizesNumber_BeforeRepositoryCheck()
+    {
+        // Arrange
+        const string normalizedMedicalRecordNumber = "MRN-100";
+
+        var repository = new Mock<IPatientRepository>();
+        repository
+            .Setup(patientRepository =>
+                patientRepository.MedicalRecordNumberExistsAsync(
+                    normalizedMedicalRecordNumber,
+                    null))
+            .ReturnsAsync(true);
+
+        var service = new PatientService(repository.Object);
+
+        // Act
+        var result = await service.MedicalRecordNumberExistsAsync(
+            "  mrn-100  ");
+
+        // Assert
+        Assert.True(result);
+        repository.Verify(
+            patientRepository =>
+                patientRepository.MedicalRecordNumberExistsAsync(
+                    normalizedMedicalRecordNumber,
+                    null),
+            Times.Once);
+    }
 }
