@@ -2,6 +2,7 @@ using System.Text;
 using System.Text.Json.Serialization;
 using CardiacPatientMonitoring.Api.Data;
 using CardiacPatientMonitoring.Api.Middleware;
+using CardiacPatientMonitoring.Api.Repositories;
 using CardiacPatientMonitoring.Api.Services;
 using CardiacPatientMonitoring.Api.Validators;
 using FluentValidation;
@@ -49,24 +50,6 @@ builder.Services
     .AddEntityFrameworkStores<CardiacDbContext>()
     .AddDefaultTokenProviders();
 
-var jwtIssuer = builder.Configuration["Jwt:Issuer"]
-    ?? throw new InvalidOperationException(
-        "JWT issuer is missing.");
-
-var jwtAudience = builder.Configuration["Jwt:Audience"]
-    ?? throw new InvalidOperationException(
-        "JWT audience is missing.");
-
-var jwtKey = builder.Configuration["Jwt:Key"]
-    ?? throw new InvalidOperationException(
-        "JWT signing key is missing.");
-
-if (Encoding.UTF8.GetByteCount(jwtKey) < 32)
-{
-    throw new InvalidOperationException(
-        "JWT signing key must be at least 32 bytes.");
-}
-
 builder.Services
     .AddAuthentication(options =>
     {
@@ -77,6 +60,24 @@ builder.Services
     })
     .AddJwtBearer(options =>
     {
+        var jwtIssuer = builder.Configuration["Jwt:Issuer"]
+            ?? throw new InvalidOperationException(
+                "JWT issuer is missing.");
+
+        var jwtAudience = builder.Configuration["Jwt:Audience"]
+            ?? throw new InvalidOperationException(
+                "JWT audience is missing.");
+
+        var jwtKey = builder.Configuration["Jwt:Key"]
+            ?? throw new InvalidOperationException(
+                "JWT signing key is missing.");
+
+        if (Encoding.UTF8.GetByteCount(jwtKey) < 32)
+        {
+            throw new InvalidOperationException(
+                "JWT signing key must be at least 32 bytes.");
+        }
+
         options.MapInboundClaims = false;
         options.TokenValidationParameters =
             new TokenValidationParameters
@@ -96,10 +97,12 @@ builder.Services
     });
 
 builder.Services.AddAuthorization();
+builder.Services.AddScoped<IPatientRepository, PatientRepository>();
 builder.Services.AddScoped<IPatientService, PatientService>();
 
 var app = builder.Build();
 
+app.UseMiddleware<GlobalExceptionHandlingMiddleware>();
 app.UseMiddleware<RequestLoggingMiddleware>();
 
 app.UseHttpsRedirection();
@@ -115,3 +118,7 @@ app.UseAuthorization();
 app.MapControllers();
 
 app.Run();
+
+public partial class Program
+{
+}

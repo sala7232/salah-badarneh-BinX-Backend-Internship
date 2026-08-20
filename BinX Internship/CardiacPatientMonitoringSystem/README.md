@@ -4,6 +4,10 @@ This project is a standalone ASP.NET Core REST API for a cardiac patient monitor
 
 The API uses SQL Server through Entity Framework Core, ASP.NET Core Identity for user storage and password hashing, JWT bearer authentication for protected routes, and FluentValidation for request validation. Swagger and Postman can be used to review the current API without a separate user interface.
 
+## Phase 3 Project Scope
+
+The selected Phase 3 project is a Healthcare Management API focused on cardiac patient monitoring. Its scope covers authentication, patient profiles, vital-sign measurements, medications, appointments, validation, SQL Server persistence, and documented REST workflows. By Week 9, it can realistically reach the professional baseline through role-based access control, unit and integration tests, deployment, CI/CD, and complete documentation.
+
 ## Main Features
 
 - Register a user and log in with email and password.
@@ -14,6 +18,7 @@ The API uses SQL Server through Entity Framework Core, ASP.NET Core Identity for
 - Filter vital signs, medications, and appointments by patient.
 - Search medications by name and filter appointments by status.
 - Validate request DTOs and return structured `400 Bad Request` responses.
+- Return safe `ProblemDetails` responses for unexpected server errors.
 - Log request methods, paths, and response status codes with custom middleware.
 
 ## Project Structure
@@ -27,12 +32,17 @@ CardiacPatientMonitoringSystem/
 |   |-- Middleware/
 |   |-- Migrations/
 |   |-- Models/
+|   |-- Repositories/
 |   |-- Services/
 |   |-- Validators/
 |   |-- Program.cs
 |   `-- appsettings.json
+|-- CardiacPatientMonitoring.Api.Tests/
+|   |-- Integration/
+|   `-- Services/
 |-- Postman/
 |-- CardiacPatientMonitoringSystem.sln
+|-- WEEK5-SUMMARY.md
 `-- README.md
 ```
 
@@ -260,6 +270,24 @@ The collection demonstrates:
 - Validation failures.
 - Patient search and module filters.
 
+## Tests
+
+Run the test suite from the solution directory:
+
+```powershell
+dotnet test
+```
+
+The Week 5 Day 1 tests use xUnit and the Arrange-Act-Assert pattern. Three `[Fact]` tests verify low, normal, and high heart-rate statuses, while one `[Theory]` runs three pulse-pressure calculation cases.
+
+The Week 5 Day 2 tests use Moq to isolate `PatientService` from `IPatientRepository`. They verify a configured return value, a repository exception, and that `GetByIdAsync` is called exactly once.
+
+The Week 5 Day 3 integration tests use `WebApplicationFactory` to send real HTTP requests through the API pipeline. They use an isolated EF Core In-Memory database and a signed test JWT to verify the patient Get-by-id success response and its not-found response.
+
+The Week 5 Day 4 middleware catches unhandled exceptions globally, logs the exception with the request method, path, and trace identifier through `ILogger`, and returns a safe `ProblemDetails` response. Its integration test deliberately makes the patient service throw and confirms that the response contains no exception message, exception type, or stack trace. The controllers and services had no redundant general-purpose `try/catch` blocks to remove.
+
+The Week 5 Day 5 risk review prioritizes heart-rate classification, pulse-pressure calculation, and medical-record-number normalization. The complete suite contains twelve passing test cases, and the [Week 5 Summary](./WEEK5-SUMMARY.md) is ready to copy into Notion for the mentor check-in.
+
 ## Tools Used
 
 - C# and .NET 10
@@ -268,4 +296,9 @@ The collection demonstrates:
 - ASP.NET Core Identity and JWT bearer authentication
 - FluentValidation
 - Swagger and Postman
+- xUnit
+- Moq
+- Microsoft.AspNetCore.Mvc.Testing
+- EF Core In-Memory provider
+- ProblemDetails and structured ILogger logging
 - Git and GitHub

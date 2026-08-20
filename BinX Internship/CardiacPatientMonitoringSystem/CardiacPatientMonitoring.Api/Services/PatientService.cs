@@ -1,59 +1,36 @@
-using CardiacPatientMonitoring.Api.Data;
 using CardiacPatientMonitoring.Api.DTOs;
 using CardiacPatientMonitoring.Api.Models;
-using Microsoft.EntityFrameworkCore;
+using CardiacPatientMonitoring.Api.Repositories;
 
 namespace CardiacPatientMonitoring.Api.Services;
 
 public class PatientService : IPatientService
 {
-    private readonly CardiacDbContext _context;
+    private readonly IPatientRepository _patientRepository;
 
-    public PatientService(CardiacDbContext context)
+    public PatientService(IPatientRepository patientRepository)
     {
-        _context = context;
+        _patientRepository = patientRepository;
     }
 
     public async Task<IReadOnlyList<PatientResponse>> GetAllAsync(
         string? search)
     {
-        IQueryable<Patient> query =
-            _context.Patients.AsNoTracking();
+        var searchValue = string.IsNullOrWhiteSpace(search)
+            ? null
+            : search.Trim();
 
-        if (!string.IsNullOrWhiteSpace(search))
-        {
-            var searchValue = search.Trim();
+        var patients = await _patientRepository.GetAllAsync(
+            searchValue);
 
-            query = query.Where(patient =>
-                patient.FullName.Contains(searchValue) ||
-                patient.MedicalRecordNumber.Contains(searchValue));
-        }
-
-        return await query
-            .OrderBy(patient => patient.Id)
-            .Select(patient => new PatientResponse(
-                patient.Id,
-                patient.MedicalRecordNumber,
-                patient.FullName,
-                patient.DateOfBirth,
-                patient.PhoneNumber,
-                patient.Diagnosis))
-            .ToListAsync();
+        return patients.Select(Map).ToList();
     }
 
     public async Task<PatientResponse?> GetByIdAsync(int id)
     {
-        return await _context.Patients
-            .AsNoTracking()
-            .Where(patient => patient.Id == id)
-            .Select(patient => new PatientResponse(
-                patient.Id,
-                patient.MedicalRecordNumber,
-                patient.FullName,
-                patient.DateOfBirth,
-                patient.PhoneNumber,
-                patient.Diagnosis))
-            .FirstOrDefaultAsync();
+        var patient = await _patientRepository.GetByIdAsync(id);
+
+        return patient is null ? null : Map(patient);
     }
 
     public async Task<bool> MedicalRecordNumberExistsAsync(
@@ -63,10 +40,10 @@ public class PatientService : IPatientService
         var normalizedNumber = NormalizeMedicalRecordNumber(
             medicalRecordNumber);
 
-        return await _context.Patients.AnyAsync(patient =>
-            patient.MedicalRecordNumber == normalizedNumber &&
-            (!excludedPatientId.HasValue ||
-             patient.Id != excludedPatientId.Value));
+        return await _patientRepository
+            .MedicalRecordNumberExistsAsync(
+                normalizedNumber,
+                excludedPatientId);
     }
 
     public async Task<PatientResponse> CreateAsync(
@@ -82,8 +59,8 @@ public class PatientService : IPatientService
             Diagnosis = request.Diagnosis.Trim()
         };
 
-        _context.Patients.Add(patient);
-        await _context.SaveChangesAsync();
+        _patientRepository.Add(patient);
+        await _patientRepository.SaveChangesAsync();
 
         return Map(patient);
     }
@@ -92,7 +69,8 @@ public class PatientService : IPatientService
         int id,
         UpdatePatientRequest request)
     {
-        var patient = await _context.Patients.FindAsync(id);
+        var patient = await _patientRepository
+            .GetTrackedByIdAsync(id);
 
         if (patient is null)
         {
@@ -107,22 +85,23 @@ public class PatientService : IPatientService
         patient.PhoneNumber = request.PhoneNumber.Trim();
         patient.Diagnosis = request.Diagnosis.Trim();
 
-        await _context.SaveChangesAsync();
+        await _patientRepository.SaveChangesAsync();
 
         return Map(patient);
     }
 
     public async Task<bool> DeleteAsync(int id)
     {
-        var patient = await _context.Patients.FindAsync(id);
+        var patient = await _patientRepository
+            .GetTrackedByIdAsync(id);
 
         if (patient is null)
         {
             return false;
         }
 
-        _context.Patients.Remove(patient);
-        await _context.SaveChangesAsync();
+        _patientRepository.Remove(patient);
+        await _patientRepository.SaveChangesAsync();
 
         return true;
     }
